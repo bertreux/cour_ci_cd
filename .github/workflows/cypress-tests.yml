@@ -27,8 +27,9 @@ jobs:
       - name: Run Jest tests
         run: npm run test
 
-      - name: Run application server.js
-        run: npm run prod
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Run Cypress tests
         run: npx cypress run
+        
