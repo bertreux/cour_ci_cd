@@ -1,6 +1,6 @@
-# Nom du Projet
+# Cour CI / CD
 
-Description courte du projet.
+Application de cour ci / cd avec exemple dans une application node js avec juste une page d'acceuil et des test jest et cypress
 
 ## Configuration et Exécution
 
