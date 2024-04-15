@@ -27,6 +27,12 @@ jobs:
       - name: Run Jest tests
         run: npm run test
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Run Cypress tests
         run: npx cypress run
         
