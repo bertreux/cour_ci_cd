@@ -14,5 +14,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Installer les dépendances Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+
+      - name: Installer les dépendances NPM
+        run: npm install
+
+      - name: Exécuter les tests Jest
+        run: npm run test
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        with:
+            start: npm run prod
