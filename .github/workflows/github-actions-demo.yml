@@ -18,3 +18,5 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/checkout@v4
       - run: python job.py
+      - run: pip install pytest
+      - run: pytest test_job.py
