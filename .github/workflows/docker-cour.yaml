@@ -1,5 +1,5 @@
 name: GitHub Actions Demo
-run-name: Push application to docker hub 🚀
+run-name: Push application to docker hub and on server 🚀
 on: [push]
 jobs:
   Push-Application-To-Docker:
@@ -21,4 +21,27 @@ jobs:
           uses: docker/build-push-action@v5
           with:
             push: true
-            tags: bertreux/cour_ci_cd:latest
+            tags: ${{ secrets.IMAGE_NAME }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: Push-Application-To-Docker
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 22 ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+          sudo apt-get install sshpass
+
+      - name: Deploy to server
+        run: |
+          sshpass -p '${{ secrets.VM_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.VM_SSH }} <<'ENDSSH'
+          docker stop ${{ secrets.CONTAINER_NAME }};
+          docker rmi ${{ secrets.IMAGE_NAME }};
+          docker run -dit --rm --name ${{ secrets.CONTAINER_NAME }} -p 5000:5000 ${{ secrets.IMAGE_NAME }}
+          ENDSSH
