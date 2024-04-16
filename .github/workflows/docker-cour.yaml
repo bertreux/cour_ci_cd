@@ -42,6 +42,7 @@ jobs:
         run: |
           sshpass -p '${{ secrets.VM_PASSWORD }}' ssh -v -o StrictHostKeyChecking=no ${{ secrets.VM_SSH }} <<'ENDSSH'
           docker container stop ${{ secrets.CONTAINER_NAME }};
+          docker container rm ${{ secrets.CONTAINER_NAME }};
           docker image rm ${{ secrets.IMAGE_NAME }};
           docker run -dit --rm --name ${{ secrets.CONTAINER_NAME }} -p 5001:5000 ${{ secrets.IMAGE_NAME }}
           ENDSSH
